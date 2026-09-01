@@ -9,6 +9,10 @@ on:
 jobs:
   build-windows:
     runs-on: windows-latest
+    env:
+      # Windows runner 默认控制台编码可能是 cp1252；强制 Python 全链路使用 UTF-8。
+      PYTHONUTF8: "1"
+      PYTHONIOENCODING: "utf-8"
     steps:
       - name: Checkout
         uses: actions/checkout@v6

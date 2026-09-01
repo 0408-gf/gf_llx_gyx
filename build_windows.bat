@@ -1,6 +1,8 @@
 @echo off
 setlocal
 cd /d "%~dp0"
+set "PYTHONUTF8=1"
+set "PYTHONIOENCODING=utf-8"
 py -3.11 -m venv .venv
 call .venv\Scripts\activate.bat
 python -m pip install --upgrade pip
