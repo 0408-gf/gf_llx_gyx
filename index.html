@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="基于球队近期表现与攻防数据的足球比赛预测工具" />
+    <title>胜算 · 足球比赛预测</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="胜算首页">
+        <span class="brand-mark">胜</span>
+        <span>胜算</span><i></i><small>FOOTBALL LAB</small>
+      </a>
+      <nav aria-label="主导航">
+        <a class="active" href="#predictor">比赛预测</a>
+        <a href="#method">模型说明</a>
+        <a href="#about">关于</a>
+      </nav>
+      <span class="status"><b></b> 模型在线</span>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span>⚽</span> DATA-DRIVEN FOOTBALL</div>
+        <h1>让数据，预见<br /><em>下一场胜利。</em></h1>
+        <p>综合球队实力、近期状态与主场优势，用泊松分布模型计算每一种赛果的可能性。</p>
+        <div class="hero-stats">
+          <div><strong>10,000+</strong><span>模拟对局</span></div>
+          <div><strong>6</strong><span>核心指标</span></div>
+          <div><strong>即时</strong><span>生成结果</span></div>
+        </div>
+      </section>
+
+      <section class="predictor" id="predictor">
+        <div class="section-heading">
+          <div><span class="step">01</span><h2>设定比赛参数</h2></div>
+          <button id="resetBtn" class="text-button" type="button">↻ 重置数据</button>
+        </div>
+
+        <form id="predictionForm">
+          <div class="team-grid">
+            <article class="team-card home-card">
+              <div class="card-label"><span></span> HOME · 主队</div>
+              <label>球队名称<input id="homeName" type="text" value="曼彻斯特蓝" maxlength="20" required /></label>
+              <div class="metric">
+                <div><label for="homeAttack">进攻能力</label><output id="homeAttackOutput">82</output></div>
+                <input id="homeAttack" type="range" min="30" max="100" value="82" />
+                <small><span>保守</span><span>强势</span></small>
+              </div>
+              <div class="metric">
+                <div><label for="homeDefense">防守能力</label><output id="homeDefenseOutput">76</output></div>
+                <input id="homeDefense" type="range" min="30" max="100" value="76" />
+                <small><span>薄弱</span><span>稳固</span></small>
+              </div>
+              <div class="metric">
+                <div><label for="homeForm">近期状态</label><output id="homeFormOutput">88</output></div>
+                <input id="homeForm" type="range" min="30" max="100" value="88" />
+                <small><span>低迷</span><span>火热</span></small>
+              </div>
+            </article>
+
+            <div class="versus" aria-hidden="true"><span>VS</span><i></i></div>
+
+            <article class="team-card away-card">
+              <div class="card-label"><span></span> AWAY · 客队</div>
+              <label>球队名称<input id="awayName" type="text" value="伦敦红" maxlength="20" required /></label>
+              <div class="metric">
+                <div><label for="awayAttack">进攻能力</label><output id="awayAttackOutput">79</output></div>
+                <input id="awayAttack" type="range" min="30" max="100" value="79" />
+                <small><span>保守</span><span>强势</span></small>
+              </div>
+              <div class="metric">
+                <div><label for="awayDefense">防守能力</label><output id="awayDefenseOutput">72</output></div>
+                <input id="awayDefense" type="range" min="30" max="100" value="72" />
+                <small><span>薄弱</span><span>稳固</span></small>
+              </div>
+              <div class="metric">
+                <div><label for="awayForm">近期状态</label><output id="awayFormOutput">68</output></div>
+                <input id="awayForm" type="range" min="30" max="100" value="68" />
+                <small><span>低迷</span><span>火热</span></small>
+              </div>
+            </article>
+          </div>
+
+          <div class="actions">
+            <label class="home-advantage"><input id="homeAdvantage" type="checkbox" checked /><span></span><b>计算主场优势</b><small>约提升主队 12% 预期进球</small></label>
+            <button class="predict-button" type="submit"><span>生成比赛预测</span><b>→</b></button>
+          </div>
+        </form>
+      </section>
+
+      <section class="results" id="results" aria-live="polite">
+        <div class="section-heading"><div><span class="step">02</span><h2>预测分析</h2></div><span class="model-tag">POISSON MODEL · V1.0</span></div>
+        <div class="result-grid">
+          <article class="outcome-panel">
+            <p class="overline">MOST LIKELY OUTCOME</p>
+            <div class="scoreline"><span id="resultHomeName">曼彻斯特蓝</span><strong id="homeScore">2</strong><i>:</i><strong id="awayScore">1</strong><span id="resultAwayName">伦敦红</span></div>
+            <div class="verdict"><span>预测赛果</span><b id="verdictText">主队获胜</b><small id="confidenceText">置信度 47%</small></div>
+            <div class="goals"><span>预期进球 (xG)</span><b id="xgText">2.01 — 1.11</b></div>
+          </article>
+          <article class="probability-panel">
+            <p class="overline">OUTCOME PROBABILITY</p>
+            <div class="prob-row home"><div><span>主胜</span><b id="homeProb">58%</b></div><div class="bar"><i id="homeBar"></i></div></div>
+            <div class="prob-row draw"><div><span>平局</span><b id="drawProb">22%</b></div><div class="bar"><i id="drawBar"></i></div></div>
+            <div class="prob-row away"><div><span>客胜</span><b id="awayProb">20%</b></div><div class="bar"><i id="awayBar"></i></div></div>
+            <div class="insight"><span>↗</span><p><b>数据洞察</b><br /><small id="insightText">主队近期状态更佳，主场加成进一步扩大了优势。</small></p></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="method" id="method">
+        <span class="step">03</span><h2>模型如何工作？</h2>
+        <div class="method-grid">
+          <div><b>01</b><h3>实力量化</h3><p>将攻防能力与近期状态归一化，生成双方基础预期进球。</p></div>
+          <div><b>02</b><h3>概率模拟</h3><p>采用泊松分布遍历 0–10 个进球的所有比分组合。</p></div>
+          <div><b>03</b><h3>赛果输出</h3><p>汇总主胜、平局和客胜概率，并找出最可能出现的比分。</p></div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="about"><span>胜算 FOOTBALL LAB</span><p>预测仅供数据分析与娱乐，请理性看待比赛结果。</p><small>© 2026</small></footer>
+    <script src="app.js"></script>
+  </body>
+</html>
