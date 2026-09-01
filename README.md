@@ -67,6 +67,8 @@ python -m pytest
 
 在已安装 Python 3.11 的 Windows 10/11 电脑双击 `build_windows.bat`。脚本会创建虚拟环境、安装依赖，依次运行 pytest 和端到端 smoke；任何检查失败都会立即停止。检查通过后使用 `football_jc_onefile.spec` 生成单文件 `dist\FootballJCAssistant.exe`，无需在旁边保留 Python 或依赖目录。原有 `football_jc.spec` 继续作为 onedir 回退方案。
 
+
+Windows 自动构建全程强制使用 UTF-8，确保中文日志与中文界面测试在 Windows Runner 上稳定执行。
 GitHub Actions 的 `.github/workflows/build-windows.yml` 会在 pull request、`main` 分支 push 或手工触发时，使用 Windows Server 和 Python 3.11 实际执行测试、smoke、单文件构建、EXE 存在性校验，并上传名为 `FootballJCAssistant-Windows` 的构建产物。非 Windows 构建不能代替这项 Windows CI 验证。
 
 ### 用户数据位置
