@@ -27,6 +27,13 @@ jobs:
         run: python -m pytest
       - name: Run end-to-end smoke test
         run: python -m scripts.smoke_test
+      - name: Run offline OCR smoke test
+        run: python -m scripts.ocr_smoke_test
+      - name: Verify bundled OCR models are installed
+        shell: pwsh
+        run: |
+          $modelCount = python -c "from pathlib import Path; import rapidocr_onnxruntime as r; print(len(list(Path(r.__file__).parent.rglob('*.onnx'))))"
+          if ([int]$modelCount -lt 3) { throw "RapidOCR detection/classification/recognition models are missing" }
       - name: Build single-file EXE
         run: pyinstaller football_jc_onefile.spec --clean --noconfirm
       - name: Verify EXE
@@ -35,6 +42,9 @@ jobs:
           if (-not (Test-Path "dist\FootballJCAssistant.exe")) {
             throw "dist\FootballJCAssistant.exe was not created"
           }
+          $size = (Get-Item "dist\FootballJCAssistant.exe").Length
+          if ($size -lt 50000000) { throw "EXE is unexpectedly small; OCR runtime/models may be missing" }
+          Write-Host "Windows artifact: dist\FootballJCAssistant.exe ($size bytes)"
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v7
         with:
