@@ -33,3 +33,28 @@ def test_main_window_has_all_pages(tmp_path, monkeypatch):
     app.processEvents()
     window.close()
     window.db.close()
+
+
+def test_cancel_ocr_preview_does_not_write_database(tmp_path, monkeypatch):
+    from PySide6.QtWidgets import QDialog
+    from services.ocr_importer import OCRPreviewRow
+
+    monkeypatch.setenv("XDG_DATA_HOME", str(tmp_path))
+    app = QApplication.instance() or QApplication([])
+    window = MainWindow()
+    monkeypatch.setattr("app.window.QFileDialog.getOpenFileName", lambda *args: (str(tmp_path / "shot.png"), ""))
+    monkeypatch.setattr("app.window.recognize_screenshot", lambda path: [OCRPreviewRow({
+        "match_time": "2026-01-01", "league": "测试", "home_team": "甲",
+        "away_team": "乙", "source": "截图OCR:shot.png",
+    })])
+
+    class CancelPreview:
+        def __init__(self, rows, parent): pass
+        def exec(self): return QDialog.DialogCode.Rejected
+
+    monkeypatch.setattr("app.window.OCRPreviewDialog", CancelPreview)
+    calls = []
+    monkeypatch.setattr(window.db, "add_matches", lambda matches: calls.append(matches))
+    window.load_file()
+    assert calls == []
+    window.close(); window.db.close()

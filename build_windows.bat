@@ -12,6 +12,8 @@ python -m pytest
 if errorlevel 1 exit /b 1
 python -m scripts.smoke_test
 if errorlevel 1 exit /b 1
+python -m scripts.ocr_smoke_test
+if errorlevel 1 exit /b 1
 pyinstaller football_jc_onefile.spec --clean --noconfirm
 if errorlevel 1 exit /b 1
 if not exist "dist\FootballJCAssistant.exe" (

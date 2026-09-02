@@ -7,7 +7,13 @@ name = "football-jc-assistant"
 version = "0.1.0"
 description = "Windows 足球比赛预测与中国竞彩足球分析工具"
 requires-python = ">=3.11"
-dependencies = ["PySide6>=6.6", "openpyxl>=3.1"]
+dependencies = [
+    "PySide6>=6.6",
+    "openpyxl>=3.1",
+    "Pillow>=10.2,<13",
+    "numpy>=1.24,<3",
+    "rapidocr-onnxruntime>=1.4.4,<2",
+]
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "pyinstaller>=6"]
