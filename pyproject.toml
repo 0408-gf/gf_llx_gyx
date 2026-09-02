@@ -13,6 +13,7 @@ dependencies = [
     "Pillow>=10.2,<13",
     "numpy>=1.24,<3",
     "rapidocr-onnxruntime>=1.4.4,<2",
+    "keyring>=25,<27",
 ]
 
 [project.optional-dependencies]
