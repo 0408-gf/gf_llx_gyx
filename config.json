@@ -1,0 +1,5 @@
+{
+  "recommendation_weights": {"probability": 0.45, "ev": 0.35, "confidence": 0.20},
+  "recommendation_thresholds": {"A": 0.65, "B": 0.45},
+  "bankroll": {"fixed_ratio": 0.01, "kelly_fraction": 0.25, "max_single_ratio": 0.03}
+}
